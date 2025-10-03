@@ -118,6 +118,8 @@ class OpStudent(models.Model):
     course_detail_ids = fields.One2many('op.student.course', 'student_id',
                                         'Course Details',
                                         tracking=True)
+    registration_ids = fields.One2many(
+        'op.subject.registration', 'student_id', string='Subject Registrations')
     active = fields.Boolean(default=True)
     _sql_constraints = [(
         'unique_gr_no',
