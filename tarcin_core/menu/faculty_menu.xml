@@ -1,0 +1,6 @@
+<odoo>
+<data>
+<menuitem id="menu_op_faculty_root" name="Faculties" sequence="25" web_icon="tarcin_core,static/description/icon_faculty.png"/>
+<menuitem id="menu_op_faculty_details" name="Profile" parent="tarcin_core.menu_op_faculty_root" sequence="20" action="act_open_op_faculty_view_2" groups="tarcin_core.group_op_faculty"/>
+</data>
+</odoo>
