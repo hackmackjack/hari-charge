@@ -56,6 +56,9 @@ class OpFaculty(models.Model):
     id_number = fields.Char('ID Card Number', size=64)
     login = fields.Char(
         'Login', related='partner_id.user_id.login', readonly=True)
+    user_id = fields.Many2one(
+        'res.users', related='partner_id.user_id', string='User',
+        store=False, readonly=True)
     last_login = fields.Datetime('Latest Connection', readonly=True,
                                  related='partner_id.user_id.login_date')
     faculty_subject_ids = fields.Many2many(
