@@ -114,11 +114,14 @@
         </record>
 
         <record model="ir.rule" id="view_all_subject_registration_rule">
-            <field name="name">View Students Registration</field>
+            <field name="name">Faculty: View Own Student Registrations</field>
             <field name="model_id" ref="model_op_subject_registration"/>
-            <field name="groups"
-                   eval="[(4, ref('tarcin_core.group_op_faculty'))]"/>
-            <field name="domain_force">['|', ('student_id.faculty_ids','in',[user.faculty_id.id]), ('student_id.faculty_ids','in',user.child_ids.ids)]
+            <field name="groups" eval="[(4, ref('tarcin_core.group_op_faculty'))]"/>
+            <field name="domain_force">
+                ['|',
+                    ('compulsory_subject_ids.faculty_ids.user_id', '=', user.id),
+                    ('elective_subject_ids.faculty_ids.user_id', '=', user.id)
+                ]
             </field>
         </record>
 
