@@ -121,11 +121,26 @@ class OpStudent(models.Model):
     registration_ids = fields.One2many(
         'op.subject.registration', 'student_id', string='Subject Registrations')
     active = fields.Boolean(default=True)
+    faculty_ids = fields.Many2many(
+        'op.faculty',
+        string='Faculty',
+        compute='_compute_faculty_ids',
+        help="The list of faculty who teach this student, based on approved subject registrations."
+    )
     _sql_constraints = [(
         'unique_gr_no',
         'unique(gr_no)',
         'Registration Number must be unique per student!'
     )]
+
+    def _compute_faculty_ids(self):
+        for student in self:
+            approved_registrations = student.registration_ids.filtered(lambda r: r.state == 'approved')
+            if approved_registrations:
+                subjects = approved_registrations.mapped('compulsory_subject_ids') | approved_registrations.mapped('elective_subject_ids')
+                student.faculty_ids = subjects.mapped('faculty_ids')
+            else:
+                student.faculty_ids = False
 
     @api.onchange('first_name', 'middle_name', 'last_name')
     def _onchange_name(self):

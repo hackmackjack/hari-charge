@@ -169,6 +169,14 @@
                                         </group>
                                 </group>
                             </page>
+                            <page name="academic_details" string="Academic Details">
+                                <separator string="Course Enrollments"/>
+                                <field name="course_detail_ids" readonly="1"/>
+                                <separator string="Subject Registrations"/>
+                                <field name="registration_ids" readonly="1"/>
+                                <separator string="Faculty"/>
+                                <field name="faculty_ids" widget="many2many_tags" readonly="1"/>
+                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
