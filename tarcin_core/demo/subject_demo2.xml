@@ -215,7 +215,7 @@
             <field name="type">theory</field>
             <field name="subject_type">elective</field>
         </record>
-        <record id="tarcin_core.op_subject_37" model="op.subject">
+        <record id="_core.op_subject_37" model="op.subject">
             <field name="code">AF-37</field>
             <field name="name">Analytics Foundation</field>
             <field name="type">theory</field>

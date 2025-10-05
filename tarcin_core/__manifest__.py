@@ -63,6 +63,7 @@
     ],
     'demo': [
         'demo/homepage_template.xml',
+        'demo/department_demo.xml',
         'demo/base_demo.xml',
         'demo/res_partner_demo.xml',
         'demo/res_users_demo.xml',
