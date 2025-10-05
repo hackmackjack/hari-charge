@@ -41,6 +41,8 @@ class OpSubject(models.Model):
         'op.department', 'Department',
         default=lambda self:
         self.env.user.dept_id and self.env.user.dept_id.id or False)
+    faculty_ids = fields.Many2many('op.faculty', 'op_faculty_subject_rel',
+                                   'subject_id', 'faculty_id', string='Faculties')
     active = fields.Boolean(default=True)
 
     _sql_constraints = [
