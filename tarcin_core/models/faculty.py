@@ -56,14 +56,10 @@ class OpFaculty(models.Model):
     id_number = fields.Char('ID Card Number', size=64)
     login = fields.Char(
         'Login', related='partner_id.user_id.login', readonly=True)
-    user_id = fields.Many2one(
-        'res.users', related='partner_id.user_id', string='User',
-        store=False, readonly=True)
     last_login = fields.Datetime('Latest Connection', readonly=True,
                                  related='partner_id.user_id.login_date')
-    faculty_subject_ids = fields.Many2many(
-        'op.subject', 'op_faculty_subject_rel',
-        'faculty_id', 'subject_id', string='Subject(s)', tracking=True)
+    faculty_subject_ids = fields.Many2many('op.subject', string='Subject(s)',
+                                           tracking=True)
     emp_id = fields.Many2one('hr.employee', 'HR Employee')
     main_department_id = fields.Many2one(
         'op.department', 'Main Department',
@@ -74,26 +70,6 @@ class OpFaculty(models.Model):
         default=lambda self:
         self.env.user.department_ids and self.env.user.department_ids.ids or False)
     active = fields.Boolean(default=True)
-    student_ids = fields.Many2many(
-        'op.student',
-        string='Students',
-        compute='_compute_student_ids',
-        help="The list of students this faculty teaches, based on approved subject registrations."
-    )
-
-    def _compute_student_ids(self):
-        for faculty in self:
-            subjects_taught = faculty.faculty_subject_ids
-            if subjects_taught:
-                approved_registrations = self.env['op.subject.registration'].search([
-                    ('state', '=', 'approved'),
-                    '|',
-                    ('compulsory_subject_ids', 'in', subjects_taught.ids),
-                    ('elective_subject_ids', 'in', subjects_taught.ids)
-                ])
-                faculty.student_ids = approved_registrations.mapped('student_id')
-            else:
-                faculty.student_ids = False
 
     @api.constrains('birth_date')
     def _check_birthdate(self):
