@@ -119,6 +119,23 @@ class OpStudent(models.Model):
                                         'Course Details',
                                         tracking=True)
     active = fields.Boolean(default=True)
+    faculty_ids = fields.Many2many('op.faculty', string='Faculty',
+                                   compute='_compute_faculty_ids',
+                                   help="""Computed field to show all faculty
+members teaching this student.""")
+
+    def _compute_faculty_ids(self):
+        """Computes the faculty members that teach this student."""
+        for student in self:
+            subjects = student.course_detail_ids.mapped('subject_ids')
+            if not subjects:
+                student.faculty_ids = self.env['op.faculty']
+                continue
+            faculties = self.env['op.faculty'].search([
+                ('faculty_subject_ids', 'in', subjects.ids)
+            ])
+            student.faculty_ids = faculties
+
     _sql_constraints = [(
         'unique_gr_no',
         'unique(gr_no)',

@@ -67,21 +67,6 @@
         </record>
 
 
-        <record model="ir.rule" id="student_login_rule">
-            <field name="name">Student Login rule</field>
-            <field name="model_id" ref="model_op_student"/>
-            <field name="groups"
-                   eval="[(4, ref('tarcin_core.group_op_back_office_admin'))]"/>
-            <field name="domain_force">[('user_id','=',user.id)]</field>
-        </record>
-
-        <record model="ir.rule" id="view_students_rule">
-            <field name="name">View Students</field>
-            <field name="model_id" ref="model_op_student"/>
-            <field name="groups"
-                   eval="[(4, ref('tarcin_core.group_op_faculty'))]"/>
-            <field name="domain_force">[(1,'=',1)]</field>
-        </record>
 
         <record model="ir.rule" id="faculty_login_rule">
             <field name="name">Faculty Login rule</field>
@@ -99,15 +84,15 @@
             <field name="domain_force">[(1,'=',1)]</field>
         </record>
 
-        <!--
         <record model="ir.rule" id="rule_op_student_faculty_allocated">
             <field name="name">Faculty: Allocated Students Only</field>
             <field name="model_id" ref="tarcin_core.model_op_student"/>
             <field name="groups" eval="[(4, ref('tarcin_core.group_op_faculty'))]"/>
-            <field name="domain_force">[('batch_id.course_id.subject_ids.faculty_ids', 'in', [user.faculty_id.id])]
+            <field name="domain_force">
+                ['|', ('course_detail_ids.course_id.subject_ids.faculty_ids.user_id', '=', user.id),
+                ('course_detail_ids.batch_id.subject_ids.faculty_ids.user_id', '=', user.id)]
             </field>
         </record>
-        -->
 
         <record model="ir.rule" id="student_subject_registration_rule">
             <field name="name">Student Subject Registration Rule</field>

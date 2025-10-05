@@ -54,10 +54,14 @@ class OpFaculty(models.Model):
     emergency_contact = fields.Many2one(
         'res.partner', 'Emergency Contact')
     id_number = fields.Char('ID Card Number', size=64)
+    user_id = fields.Many2one('res.users', string='User',
+                              help="""The user account linked to this faculty member.
+This is used for access control and to associate the faculty
+with their corresponding user.""")
     login = fields.Char(
-        'Login', related='partner_id.user_id.login', readonly=True)
+        'Login', related='user_id.login', readonly=True)
     last_login = fields.Datetime('Latest Connection', readonly=True,
-                                 related='partner_id.user_id.login_date')
+                                 related='user_id.login_date')
     faculty_subject_ids = fields.Many2many('op.subject', string='Subject(s)',
                                            tracking=True)
     emp_id = fields.Many2one('hr.employee', 'HR Employee')
@@ -70,6 +74,24 @@ class OpFaculty(models.Model):
         default=lambda self:
         self.env.user.department_ids and self.env.user.department_ids.ids or False)
     active = fields.Boolean(default=True)
+    student_ids = fields.Many2many('op.student', string='Students',
+                                   compute='_compute_student_ids',
+                                   help="""Computed field to show all students
+taught by this faculty member.""")
+
+    def _compute_student_ids(self):
+        """Computes the students that are taught by this faculty member."""
+        for faculty in self:
+            subjects = faculty.faculty_subject_ids
+            if not subjects:
+                faculty.student_ids = self.env['op.student']
+                continue
+            students = self.env['op.student'].search([
+                '|',
+                ('course_detail_ids.course_id.subject_ids', 'in', subjects.ids),
+                ('course_detail_ids.batch_id.subject_ids', 'in', subjects.ids)
+            ])
+            faculty.student_ids = students
 
     @api.constrains('birth_date')
     def _check_birthdate(self):
