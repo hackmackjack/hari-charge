@@ -115,6 +115,7 @@ class OpStudent(models.Model):
 
     user_id = fields.Many2one('res.users', 'User', ondelete="cascade")
     gr_no = fields.Char("Registration Number", size=15)
+    course_id = fields.Many2one('op.course', string='Course', required=True)
     course_detail_ids = fields.One2many('op.student.course', 'student_id',
                                         'Course Details',
                                         tracking=True)

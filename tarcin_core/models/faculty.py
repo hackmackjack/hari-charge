@@ -54,15 +54,13 @@ class OpFaculty(models.Model):
     emergency_contact = fields.Many2one(
         'res.partner', 'Emergency Contact')
     id_number = fields.Char('ID Card Number', size=64)
-    user_id = fields.Many2one('res.users', string='User',
-                              help="The user account linked to this faculty member.")
     login = fields.Char(
-        'Login', related='user_id.login', readonly=True)
+        'Login', related='partner_id.user_id.login', readonly=True)
     last_login = fields.Datetime('Latest Connection', readonly=True,
-                                 related='user_id.login_date')
-    faculty_subject_ids = fields.Many2many(
-        'op.subject', 'faculty_subject_rel', 'faculty_id', 'subject_id',
-        string='Subject(s)', tracking=True)
+                                 related='partner_id.user_id.login_date')
+    course_ids = fields.Many2many('op.course', string='Courses Taught')
+    faculty_subject_ids = fields.Many2many('op.subject', string='Subject(s)',
+                                           tracking=True)
     emp_id = fields.Many2one('hr.employee', 'HR Employee')
     main_department_id = fields.Many2one(
         'op.department', 'Main Department',

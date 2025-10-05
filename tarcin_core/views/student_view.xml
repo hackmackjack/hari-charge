@@ -169,6 +169,11 @@
                                         </group>
                                 </group>
                             </page>
+                            <page name="academic_details" string="Academic Details">
+                                <group>
+                                    <field name="course_id"/>
+                                </group>
+                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
