@@ -169,13 +169,6 @@
                                         </group>
                                 </group>
                             </page>
-                            <page name="academic_details" string="Academic Details">
-                                <group>
-                                    <field name="course_detail_ids" colspan="4" nolabel="1"/>
-                                    <field name="faculty_ids" widget="many2many_tags"
-                                           colspan="4" nolabel="1" readonly="1"/>
-                                </group>
-                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">

@@ -42,6 +42,9 @@ class OpSubject(models.Model):
         default=lambda self:
         self.env.user.dept_id and self.env.user.dept_id.id or False)
     active = fields.Boolean(default=True)
+    faculty_ids = fields.Many2many(
+        'op.faculty', 'faculty_subject_rel', 'subject_id', 'faculty_id',
+        string='Faculties')
 
     _sql_constraints = [
         ('unique_subject_code',

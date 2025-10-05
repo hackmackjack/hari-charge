@@ -166,9 +166,6 @@
                             <page name="subjects" string="Subjects">
                                 <field name="faculty_subject_ids" colspan="4" nolabel="1"/>
                             </page>
-                            <page name="students" string="Students">
-                                <field name="student_ids" colspan="4" nolabel="1"/>
-                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
