@@ -62,7 +62,7 @@
             <field name="category_id" eval="False"/>
             <field name="users" eval="[(4, ref('base.user_admin'))]"/>
             <field name="implied_ids"
-                   eval="[(4, ref('tarcin_core.group_op_back_office_admin')),(4, ref('tarcin_core.group_op_faculty')),(4, ref('base.group_partner_manager'))]"/>
+                   eval="[(4, ref('tarcin_core.group_op_back_office_admin')),(4, ref('base.group_partner_manager'))]"/>
         </record>
 
         <record model="ir.rule" id="faculty_login_rule">
