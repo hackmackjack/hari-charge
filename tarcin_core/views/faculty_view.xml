@@ -160,11 +160,15 @@
                                         <field name="blood_group"/>
                                         <field name="allowed_department_ids" widget="many2many_tags"
                                                groups="tarcin_core.group_multi_department"/>
+                                        <field name="course_ids" widget="many2many_tags"/>
                                     </group>
                                 </group>
                             </page>
                             <page name="subjects" string="Subjects">
                                 <field name="faculty_subject_ids" colspan="4" nolabel="1"/>
+                            </page>
+                            <page name="students" string="Students">
+                                <field name="student_ids" colspan="4" nolabel="1" readonly="1"/>
                             </page>
                         </notebook>
                     </sheet>

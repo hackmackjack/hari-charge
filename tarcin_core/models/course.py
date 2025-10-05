@@ -43,6 +43,26 @@ class OpCourse(models.Model):
         default=lambda self:
         self.env.user.dept_id and self.env.user.dept_id.id or False)
     active = fields.Boolean(default=True)
+    faculty_ids = fields.Many2many(
+        'op.faculty',
+        string='Faculty',
+        compute='_compute_faculty_ids',
+        readonly=True,
+        help="Faculty members teaching subjects in this course."
+    )
+
+    @api.depends('subject_ids')
+    def _compute_faculty_ids(self):
+        """Computes the faculty members who teach subjects in this course."""
+        for course in self:
+            if course.subject_ids:
+                # Find faculty who teach any of the subjects in this course
+                faculty_ids = self.env['op.faculty'].search([
+                    ('faculty_subject_ids', 'in', course.subject_ids.ids)
+                ])
+                course.faculty_ids = faculty_ids
+            else:
+                course.faculty_ids = False
 
     _sql_constraints = [
         ('unique_course_code',

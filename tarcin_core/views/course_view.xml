@@ -54,6 +54,9 @@
                                 <field name="subject_ids" nolabel="1">
                                 </field>
                             </page>
+                            <page string="Faculty" name="faculty">
+                                <field name="faculty_ids" nolabel="1" readonly="1"/>
+                            </page>
                         </notebook>
                     </sheet>
                     <div class="oe_chatter">
