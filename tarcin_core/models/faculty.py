@@ -70,26 +70,6 @@ class OpFaculty(models.Model):
         default=lambda self:
         self.env.user.department_ids and self.env.user.department_ids.ids or False)
     active = fields.Boolean(default=True)
-    student_ids = fields.Many2many(
-        'op.student',
-        string='Students',
-        compute='_compute_student_ids',
-        help="The list of students this faculty teaches, based on approved subject registrations."
-    )
-
-    def _compute_student_ids(self):
-        for faculty in self:
-            subjects_taught = faculty.faculty_subject_ids
-            if subjects_taught:
-                approved_registrations = self.env['op.subject.registration'].search([
-                    ('state', '=', 'approved'),
-                    '|',
-                    ('compulsory_subject_ids', 'in', subjects_taught.ids),
-                    ('elective_subject_ids', 'in', subjects_taught.ids)
-                ])
-                faculty.student_ids = approved_registrations.mapped('student_id')
-            else:
-                faculty.student_ids = False
 
     @api.constrains('birth_date')
     def _check_birthdate(self):
