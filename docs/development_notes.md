@@ -1,5 +1,18 @@
 # Development Notes
 
+## Data Model Refactor (2025-10-05)
+
+This update refactors the faculty-course relationship to create a single source of truth, resolving the root cause of the faculty-student visibility issue.
+
+### 1. Automated Faculty-Course Linkage
+-   **Issue:** The "Courses Taught" (`course_ids`) field on the faculty model was a manual `Many2many` field. This required manual data entry, which was error-prone and led to an unreliable link between faculty and their courses, causing the "Students" tab to be empty.
+-   **Fix (`op.faculty` model):** The `course_ids` field has been refactored into a **computed and stored** field.
+    -   It now automatically calculates the courses a faculty teaches based on their assigned subjects (`faculty_subject_ids`).
+    -   This change establishes `faculty_subject_ids` as the single source of truth.
+-   **Impact:** This ensures the link between faculty and courses is always accurate and automatic, which in turn fixes the logic for the "Students" tab and the faculty security rules. The system is now more robust and less dependent on manual data entry.
+
+---
+
 ## Data Integrity Fix (2025-10-05)
 
 This update addresses a critical data linkage issue where the connection between a user and their faculty profile was not being automatically established, causing record rules and computed fields to fail.

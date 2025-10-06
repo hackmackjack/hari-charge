@@ -160,7 +160,7 @@
                                         <field name="blood_group"/>
                                         <field name="allowed_department_ids" widget="many2many_tags"
                                                groups="tarcin_core.group_multi_department"/>
-                                        <field name="course_ids" widget="many2many_tags"/>
+                                        <field name="course_ids" widget="many2many_tags" readonly="1"/>
                                     </group>
                                 </group>
                             </page>

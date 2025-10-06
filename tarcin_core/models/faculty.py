@@ -58,7 +58,9 @@ class OpFaculty(models.Model):
         'Login', related='partner_id.user_id.login', readonly=True)
     last_login = fields.Datetime('Latest Connection', readonly=True,
                                  related='partner_id.user_id.login_date')
-    course_ids = fields.Many2many('op.course', string='Courses Taught')
+    course_ids = fields.Many2many(
+        'op.course', string='Courses Taught',
+        compute='_compute_course_ids', store=True)
     faculty_subject_ids = fields.Many2many('op.subject', string='Subject(s)',
                                            tracking=True)
     emp_id = fields.Many2one('hr.employee', 'HR Employee')
@@ -78,6 +80,18 @@ class OpFaculty(models.Model):
         readonly=True,
         help="Students who are enrolled in the courses taught by this faculty."
     )
+
+    @api.depends('faculty_subject_ids')
+    def _compute_course_ids(self):
+        """Computes the courses that include subjects taught by this faculty."""
+        for faculty in self:
+            if faculty.faculty_subject_ids:
+                courses = self.env['op.course'].search([
+                    ('subject_ids', 'in', faculty.faculty_subject_ids.ids)
+                ])
+                faculty.course_ids = courses
+            else:
+                faculty.course_ids = False
 
     @api.depends('course_ids')
     def _compute_student_ids(self):
