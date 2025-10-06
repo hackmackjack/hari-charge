@@ -98,10 +98,10 @@ class OpFaculty(models.Model):
         """Computes the students who are in the courses taught by this faculty."""
         for faculty in self:
             if faculty.course_ids:
-                student_ids = self.env['op.student'].search([
+                student_courses = self.env['op.student.course'].search([
                     ('course_id', 'in', faculty.course_ids.ids)
                 ])
-                faculty.student_ids = student_ids
+                faculty.student_ids = student_courses.mapped('student_id')
             else:
                 faculty.student_ids = False
 

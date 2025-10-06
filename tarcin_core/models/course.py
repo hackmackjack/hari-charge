@@ -56,7 +56,6 @@ class OpCourse(models.Model):
         """Computes the faculty members who teach subjects in this course."""
         for course in self:
             if course.subject_ids:
-                # Find faculty who teach any of the subjects in this course
                 faculty_ids = self.env['op.faculty'].search([
                     ('faculty_subject_ids', 'in', course.subject_ids.ids)
                 ])
