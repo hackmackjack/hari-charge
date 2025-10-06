@@ -120,6 +120,37 @@ class OpFaculty(models.Model):
             record.partner_id.write({'partner_share': True, 'employee': True})
 
     @api.model
+    def create(self, vals):
+        """
+        Overrides create to automatically link the user to the new faculty record.
+        """
+        res = super(OpFaculty, self).create(vals)
+        if res.partner_id and res.partner_id.user_id:
+            res.partner_id.user_id.faculty_id = res.id
+        return res
+
+    def write(self, vals):
+        """
+        Overrides write to update the user-faculty link if the partner is changed.
+        It clears the faculty link from the old user and sets it on the new one.
+        """
+        # If partner is being changed, unlink the old user first
+        if 'partner_id' in vals:
+            for record in self:
+                if record.partner_id and record.partner_id.user_id:
+                    # Clear the faculty link from the user of the old partner
+                    record.partner_id.user_id.faculty_id = False
+
+        res = super(OpFaculty, self).write(vals)
+
+        # After the write, link the new user
+        if 'partner_id' in vals:
+            for record in self:
+                if record.partner_id and record.partner_id.user_id:
+                    record.partner_id.user_id.faculty_id = record.id
+        return res
+
+    @api.model
     def get_import_templates(self):
         return [{
             'label': _('Import Template for Faculties'),

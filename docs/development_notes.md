@@ -1,5 +1,18 @@
 # Development Notes
 
+## Data Integrity Fix (2025-10-05)
+
+This update addresses a critical data linkage issue where the connection between a user and their faculty profile was not being automatically established, causing record rules and computed fields to fail.
+
+### 1. Automated User-Faculty Linking
+-   **Issue:** The `faculty_id` field on the `res.users` model was not being populated when a faculty record was created or linked to a user. This resulted in faculty members being unable to see their students, as the system could not identify them correctly.
+-   **Fix (`op.faculty` model):** The `create` and `write` methods of the `op.faculty` model have been overridden.
+    -   On **create**, the new logic automatically finds the user associated with the faculty's partner record and writes the faculty's ID to the user's `faculty_id` field.
+    -   On **write**, if the partner is changed, the logic first clears the `faculty_id` from the old user's record and then populates it for the new user, ensuring the link is always accurate.
+-   **Impact:** This ensures a robust, automated data link between `res.users` and `op.faculty`, guaranteeing that security rules and related data fields function correctly.
+
+---
+
 ## Usability Enhancements (2025-10-05)
 
 This update introduces new computed fields and view modifications to improve the user experience for faculty and administrators by making relational data more accessible.
