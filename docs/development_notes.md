@@ -1,5 +1,18 @@
 # Development Notes
 
+## Record Rule Correction (2025-10-06)
+
+This update provides the definitive fix for the faculty-student visibility issue by implementing a more precise, subject-based security rule.
+
+### 1. Corrected Student Visibility for Faculty
+-   **Issue:** Even with previous fixes, faculty users could not see students in the main "Students" menu. The record rule governing this (`rule_student_faculty_course`) was based on a high-level course link, which was not specific enough to correctly filter students.
+-   **Fix (`op_security.xml`):** The domain for the student visibility rule was changed to be based on the most direct link between a faculty and a student: the subjects they share.
+    -   **Old Domain:** `[('course_id', 'in', user.faculty_id.course_ids.ids)]`
+    -   **New, Correct Domain:** `[('course_detail_ids.subject_ids', 'in', user.faculty_id.faculty_subject_ids.ids)]`
+-   **Impact:** This change finally resolves the student visibility issue for faculty users across the entire application, ensuring they can only see students who are enrolled in the specific subjects they teach.
+
+---
+
 ## Data Model Refactor (2025-10-05)
 
 This update refactors the faculty-course relationship to create a single source of truth, resolving the root cause of the faculty-student visibility issue.
