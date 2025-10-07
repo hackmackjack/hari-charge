@@ -77,6 +77,7 @@ class OpFaculty(models.Model):
         'op.student',
         string='Students',
         compute='_compute_student_ids',
+        store=True,
         readonly=True,
         help="Students who are enrolled in the courses taught by this faculty."
     )

@@ -1,5 +1,16 @@
 # Development Notes
 
+## Regression Fix: Restore Student Linkage (2025-10-06)
+
+This update addresses a regression where the "Students" tab on the faculty form stopped displaying student records after a previous commit.
+
+### 1. Restored Student Visibility
+-   **Issue:** A regression caused the `student_ids` computed field to stop working, leaving the student list empty for both admin and faculty users.
+-   **Fix (`op.faculty` model):** The `student_ids` field was reviewed and `store=True` was added to its definition. Storing the computed field ensures its value is saved in the database, making it more robust and reliable for UI display, especially since it depends on another computed field (`course_ids`).
+-   **Impact:** This change is expected to resolve the regression and correctly display the list of students associated with each faculty member.
+
+---
+
 ## Final Solution: Faculty-Student Visibility (2025-10-06)
 
 This document outlines the complete and final implementation for the faculty-student visibility feature, incorporating all necessary data model changes, security rules, and UI enhancements.
